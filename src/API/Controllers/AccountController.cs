@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using API.Application.Account.Commands.CreateAccount;
+using API.Application.Account.Queries.GetAccountByIBAN;
 using Microsoft.AspNetCore.Mvc;
+using AccountDto = API.Application.Account.Commands.CreateAccount.AccountDto;
 
 namespace API.Controllers
 {
@@ -10,7 +12,8 @@ namespace API.Controllers
         [HttpGet("{IBAN}", Name = "GetAccountByIBAN")]
         public async Task<ActionResult<string>> GetAccountByIBAN(string IBAN)
         {
-            return NotFound();
+            var dto = await Mediator.Send(new GetAccountByIBANQuery {IBAN = IBAN});
+            return Ok(dto);
         }
 
         [HttpPost]
