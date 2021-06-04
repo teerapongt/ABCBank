@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using API.Application.Account.Commands.CreateAccount;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +7,17 @@ namespace API.Controllers
 {
     public class AccountController : ApiControllerBase
     {
-        [HttpPost]
-        public async Task<ActionResult<string>> Create([FromForm] CreateAccountCommand command)
+        [HttpGet("{IBAN}", Name = "GetAccountByIBAN")]
+        public async Task<ActionResult<string>> GetAccountByIBAN(string IBAN)
         {
-            return await Mediator.Send(command);
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AccountDto>> Create([FromForm] CreateAccountCommand command)
+        {
+            var dto = await Mediator.Send(command);
+            return CreatedAtRoute("GetAccountByIBAN", new {dto.IBAN}, dto);
         }
     }
 }

@@ -1,23 +1,35 @@
 using System.Threading;
 using System.Threading.Tasks;
 using API.Application.Common.Interfaces;
+using AutoMapper;
 using MediatR;
 
 namespace API.Application.Account.Commands.CreateAccount
 {
-    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, string>
+    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, AccountDto>
     {
         private readonly IIBAN _iban;
-        
-        public CreateAccountCommandHandler(IIBAN iban)
+        private readonly IABCBankDbContext _context;
+        private readonly IMapper _mapper;
+
+        public CreateAccountCommandHandler(IIBAN iban, IABCBankDbContext context, IMapper mapper)
         {
             _iban = iban;
+            _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<string> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<AccountDto> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-            var iban = await _iban.Generate;
-            return await Task.Run(() => $"return from create account command(Name: {request.Name}, IBAN: {iban})", cancellationToken);
+            var entity = new Domain.Entities.Account
+            {
+                Id = 0,
+                IBAN = await _iban.Generate,
+                Name = request.Name
+            };
+            _context.Accounts.Add(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+            return _mapper.Map<AccountDto>(entity);
         }
     }
 }
