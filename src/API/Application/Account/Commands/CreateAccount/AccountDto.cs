@@ -6,6 +6,5 @@ namespace API.Application.Account.Commands.CreateAccount
     {
         public string IBAN { get; set; }
         public string Name { get; set; }
-        public decimal Balance { get; set; }
     }
 }
