@@ -6,7 +6,7 @@ using MediatR;
 
 namespace API.Application.Account.Commands.CreateAccount
 {
-    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, AccountDto>
+    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, CreateAccountDto>
     {
         private readonly IIBAN _iban;
         private readonly IABCBankDbContext _context;
@@ -19,7 +19,7 @@ namespace API.Application.Account.Commands.CreateAccount
             _mapper = mapper;
         }
 
-        public async Task<AccountDto> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<CreateAccountDto> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
             var entity = new Domain.Entities.Account
             {
@@ -29,7 +29,7 @@ namespace API.Application.Account.Commands.CreateAccount
             };
             _context.Accounts.Add(entity);
             await _context.SaveChangesAsync(cancellationToken);
-            return _mapper.Map<AccountDto>(entity);
+            return _mapper.Map<CreateAccountDto>(entity);
         }
     }
 }
