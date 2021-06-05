@@ -11,11 +11,12 @@ namespace API.Application.Account.Commands.Deposit
     public class DepositCommandHandler : IRequestHandler<DepositCommand, DepositDto>
     {
         private readonly IABCBankDbContext _context;
+        private readonly IFee _fee;
         private readonly IMapper _mapper;
-
-        public DepositCommandHandler(IABCBankDbContext context, IMapper mapper)
+        public DepositCommandHandler(IABCBankDbContext context, IFee fee, IMapper mapper)
         {
             _context = context;
+            _fee = fee;
             _mapper = mapper;
         }
 
@@ -27,7 +28,7 @@ namespace API.Application.Account.Commands.Deposit
                 .SingleAsync(cancellationToken);
 
             decimal lastBalance = account.Balance;
-            decimal fee = request.Amount * 0.001M;
+            decimal fee = request.Amount * _fee.Deposit;
             decimal netAmount = request.Amount - fee;
             decimal balance = lastBalance + netAmount;
 

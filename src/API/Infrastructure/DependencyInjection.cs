@@ -22,6 +22,7 @@ namespace API.Infrastructure
             services.AddTransient<ICurrentUser, CurrentUser>();
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IIBAN, IBANService>();
+            services.AddTransient<IFee, FeeService>();
 
             return services;
         }
