@@ -11,6 +11,7 @@ namespace API.Controllers
     public class AccountController : ApiControllerBase
     {
         [HttpGet("{IBAN}", Name = "GetByIBAN")]
+        [ProducesResponseType(typeof(GetByIBANDto), 200)]
         public async Task<ActionResult<GetByIBANDto>> GetByIBAN(string IBAN)
         {
             var dto = await Mediator.Send(new GetByIBANQuery {IBAN = IBAN});
@@ -18,6 +19,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(CreateDto), 201)]
         public async Task<ActionResult<CreateDto>> Create([FromForm] CreateCommand command)
         {
             var dto = await Mediator.Send(command);
@@ -25,6 +27,7 @@ namespace API.Controllers
         }
 
         [HttpPut("[action]/{IBAN}")]
+        [ProducesResponseType(typeof(DepositDto), 200)]
         public async Task<ActionResult<DepositDto>> Deposit(string IBAN, [FromForm] decimal amount)
         {
             var dto = await Mediator.Send(new DepositCommand {IBAN = IBAN, Amount = amount});
@@ -32,6 +35,7 @@ namespace API.Controllers
         }
 
         [HttpPut("[action]/{IBAN}")]
+        [ProducesResponseType(typeof(TransferDto), 200)]
         public async Task<ActionResult<TransferDto>> Transfer(string IBAN, [FromForm] string ToIBAN,
             [FromForm] decimal amount)
         {
