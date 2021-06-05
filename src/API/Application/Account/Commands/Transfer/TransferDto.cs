@@ -6,6 +6,6 @@ namespace API.Application.Account.Commands.Transfer
         public string FromName { get; set; }
         public string To { get; set; }
         public string ToName { get; set; }
-        public decimal Transfer { get; set; }
+        public decimal Amount { get; set; }
     }
 }

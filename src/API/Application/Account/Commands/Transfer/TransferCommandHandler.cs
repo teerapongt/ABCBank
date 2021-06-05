@@ -29,11 +29,11 @@ namespace API.Application.Account.Commands.Transfer
                 .SingleAsync(cancellationToken);
 
             decimal fromLastBalance = from.Balance;
-            decimal transfer = request.Amount;
+            decimal amount = request.Amount;
             decimal toLastBalance = to.Balance;
-            decimal fromBalance = fromLastBalance - transfer;
+            decimal fromBalance = fromLastBalance - amount;
             from.Balance = fromBalance;
-            to.Balance = toLastBalance + transfer;
+            to.Balance = toLastBalance + amount;
             _context.Accounts.Update(from);
             _context.Accounts.Update(to);
             await _context.SaveChangesAsync(cancellationToken);
@@ -44,7 +44,7 @@ namespace API.Application.Account.Commands.Transfer
                 FromName = from.Name,
                 To = to.IBAN,
                 ToName = to.Name,
-                Transfer = transfer
+                Amount = amount
             };
 
             return dto;
