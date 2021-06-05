@@ -4,22 +4,22 @@ using API.Application.Common.Interfaces;
 using AutoMapper;
 using MediatR;
 
-namespace API.Application.Account.Commands.CreateAccount
+namespace API.Application.Account.Commands.Create
 {
-    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, CreateAccountDto>
+    public class CreateCommandHandler : IRequestHandler<CreateCommand, CreateDto>
     {
         private readonly IIBAN _iban;
         private readonly IABCBankDbContext _context;
         private readonly IMapper _mapper;
 
-        public CreateAccountCommandHandler(IIBAN iban, IABCBankDbContext context, IMapper mapper)
+        public CreateCommandHandler(IIBAN iban, IABCBankDbContext context, IMapper mapper)
         {
             _iban = iban;
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<CreateAccountDto> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<CreateDto> Handle(CreateCommand request, CancellationToken cancellationToken)
         {
             var entity = new Domain.Entities.Account
             {
@@ -29,7 +29,7 @@ namespace API.Application.Account.Commands.CreateAccount
             };
             _context.Accounts.Add(entity);
             await _context.SaveChangesAsync(cancellationToken);
-            return _mapper.Map<CreateAccountDto>(entity);
+            return _mapper.Map<CreateDto>(entity);
         }
     }
 }

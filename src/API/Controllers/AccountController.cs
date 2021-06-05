@@ -1,38 +1,38 @@
 using System;
 using System.Threading.Tasks;
-using API.Application.Account.Commands.CreateAccount;
-using API.Application.Account.Commands.DepositAccount;
+using API.Application.Account.Commands.Create;
+using API.Application.Account.Commands.Deposit;
 using API.Application.Account.Commands.Transfer;
-using API.Application.Account.Queries.GetAccountByIBAN;
+using API.Application.Account.Queries.GetByIBAN;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     public class AccountController : ApiControllerBase
     {
-        [HttpGet("{IBAN}", Name = "GetAccountByIBAN")]
-        public async Task<ActionResult<string>> GetAccountByIBAN(string IBAN)
+        [HttpGet("{IBAN}", Name = "GetByIBAN")]
+        public async Task<ActionResult<GetByIBANDto>> GetByIBAN(string IBAN)
         {
-            var dto = await Mediator.Send(new GetAccountByIBANQuery {IBAN = IBAN});
+            var dto = await Mediator.Send(new GetByIBANQuery {IBAN = IBAN});
             return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateAccountDto>> Create([FromForm] CreateAccountCommand command)
+        public async Task<ActionResult<CreateDto>> Create([FromForm] CreateCommand command)
         {
             var dto = await Mediator.Send(command);
-            return CreatedAtRoute("GetAccountByIBAN", new {dto.IBAN}, dto);
+            return CreatedAtRoute("GetByIBAN", new {dto.IBAN}, dto);
         }
 
         [HttpPut("[action]/{IBAN}")]
-        public async Task<ActionResult<CreateAccountDto>> Deposit(string IBAN, [FromForm] decimal deposit)
+        public async Task<ActionResult<DepositDto>> Deposit(string IBAN, [FromForm] decimal amount)
         {
-            var dto = await Mediator.Send(new DepositAccountCommand {IBAN = IBAN, Deposit = deposit});
-            return Accepted(dto);
+            var dto = await Mediator.Send(new DepositCommand {IBAN = IBAN, Amount = amount});
+            return Ok(dto);
         }
 
         [HttpPut("[action]/{IBAN}")]
-        public async Task<ActionResult<CreateAccountDto>> Transfer(string IBAN, [FromForm] string ToIBAN,
+        public async Task<ActionResult<TransferDto>> Transfer(string IBAN, [FromForm] string ToIBAN,
             [FromForm] decimal amount)
         {
             var dto = await Mediator.Send(new TransferCommand

@@ -6,20 +6,20 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Application.Account.Commands.DepositAccount
+namespace API.Application.Account.Commands.Deposit
 {
-    public class DepositAccountCommandHandler : IRequestHandler<DepositAccountCommand, DepositAccountDto>
+    public class DepositCommandHandler : IRequestHandler<DepositCommand, DepositDto>
     {
         private readonly IABCBankDbContext _context;
         private readonly IMapper _mapper;
 
-        public DepositAccountCommandHandler(IABCBankDbContext context, IMapper mapper)
+        public DepositCommandHandler(IABCBankDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<DepositAccountDto> Handle(DepositAccountCommand request, CancellationToken cancellationToken)
+        public async Task<DepositDto> Handle(DepositCommand request, CancellationToken cancellationToken)
         {
             var account = await _context.Accounts
                 .AsNoTracking()
@@ -27,19 +27,19 @@ namespace API.Application.Account.Commands.DepositAccount
                 .SingleAsync(cancellationToken);
 
             decimal lastBalance = account.Balance;
-            decimal fee = request.Deposit * 0.001M;
-            decimal totalDeposit = request.Deposit - fee;
-            decimal balance = lastBalance + totalDeposit;
+            decimal fee = request.Amount * 0.001M;
+            decimal netAmount = request.Amount - fee;
+            decimal balance = lastBalance + netAmount;
 
             account.Balance = balance;
             _context.Accounts.Update(account);
             await _context.SaveChangesAsync(cancellationToken);
 
-            var dto = _mapper.Map<DepositAccountDto>(account);
+            var dto = _mapper.Map<DepositDto>(account);
             dto.LastBalance = lastBalance;
-            dto.Deposit = request.Deposit;
+            dto.Amount = request.Amount;
             dto.Fee = fee;
-            dto.TotalDeposit = totalDeposit;
+            dto.NetAmount = netAmount;
             dto.Balance = balance;
 
             return dto;
