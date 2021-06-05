@@ -26,7 +26,7 @@ namespace API.Application.Account.Queries.GetByIBAN
                 .AsNoTracking()
                 .Where(w => Equals(w.IBAN, request.IBAN))
                 .ProjectTo<GetByIBANDto>(_mapper.ConfigurationProvider)
-                .SingleAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
             
             return dto;
         }

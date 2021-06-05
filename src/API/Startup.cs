@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Application;
+using API.Filters;
 using API.Infrastructure;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,8 +32,13 @@ namespace API
         {
             services.AddApplication();
             services.AddInfrastructure(Configuration);
-            services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "ABCBank API", Version = "v1"}); });
+            services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>())
+                .AddFluentValidation();
+
+            services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+
+            services.AddSwaggerGen(
+                c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "ABCBank API", Version = "v1"}); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
