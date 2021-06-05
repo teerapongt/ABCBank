@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using API.Application.Account.Commands.CreateAccount;
 using API.Application.Account.Commands.DepositAccount;
+using API.Application.Account.Commands.Transfer;
 using API.Application.Account.Queries.GetAccountByIBAN;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,15 @@ namespace API.Controllers
         {
             var dto = await Mediator.Send(new DepositAccountCommand {IBAN = IBAN, Deposit = deposit});
             return Accepted(dto);
+        }
+
+        [HttpPut("[action]/{IBAN}")]
+        public async Task<ActionResult<CreateAccountDto>> Transfer(string IBAN, [FromForm] string ToIBAN,
+            [FromForm] decimal amount)
+        {
+            var dto = await Mediator.Send(new TransferCommand
+                {FromIBAN = IBAN, ToIBAN = ToIBAN, Amount = amount});
+            return Ok(dto);
         }
     }
 }
