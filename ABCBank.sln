@@ -4,6 +4,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{99E84644-59A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "src\API\API.csproj", "{7CBB5213-DE68-4BAF-A575-DECFE70A3C3A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2739A2AF-BAF1-4ACE-B7E5-76B58F402F11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.UnitTests", "src\tests\API.UnitTests\API.UnitTests.csproj", "{D1189F0D-37A1-432D-90CA-3052372F1DF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -11,11 +15,16 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7CBB5213-DE68-4BAF-A575-DECFE70A3C3A} = {99E84644-59A9-4882-B195-383E05F6C75F}
+		{D1189F0D-37A1-432D-90CA-3052372F1DF1} = {2739A2AF-BAF1-4ACE-B7E5-76B58F402F11}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7CBB5213-DE68-4BAF-A575-DECFE70A3C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CBB5213-DE68-4BAF-A575-DECFE70A3C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CBB5213-DE68-4BAF-A575-DECFE70A3C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CBB5213-DE68-4BAF-A575-DECFE70A3C3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1189F0D-37A1-432D-90CA-3052372F1DF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1189F0D-37A1-432D-90CA-3052372F1DF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1189F0D-37A1-432D-90CA-3052372F1DF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1189F0D-37A1-432D-90CA-3052372F1DF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
